@@ -1,129 +1,91 @@
-# helsinki-fuel-dash — Master Plan
+# PLAN — helsinki-fuel-dash
 
-*(Repo name is a suggestion — rename freely, nothing depends on it.)*
+Replanned 2026-07-08. Original plan (same date) used the unofficial Tankille API;
+that source blocked us on day one and this plan replaces it entirely. No workarounds
+against Tankille. New source: scraping polttoaine.net.
 
 ## What this is
 
-A self-hosted fuel price tracker for the Helsinki area. Polls the Tankille API on a
-schedule, accumulates price history in SQLite, and publishes a static trend dashboard.
-Exists because the Tankille app only shows a map view with ~1 week of per-station
-history — no "all of Helsinki sorted by price" and no long-term trends. This project
-builds the historical dataset nobody serves for free.
+A personal fuel price tracker for the Helsinki area. No existing service shows
+long-term price trends or a sorted city-wide list, so this project collects its own
+history and visualizes it. Poller collects prices into SQLite, exports JSON, a static
+Chart.js dashboard on GH Pages reads the JSON.
 
-Planned 2026-07-08. API details verified from source that day (see docs/API.md).
+## Source: polttoaine.net
+
+Independent crowdsourced fuel price site, ~395 active stations across Finland.
+Prices submitted by drivers, each report stays visible 5 days (confirmed from the
+site footer, 2026-07-08). Plain server-rendered HTML, no auth, no API key.
+
+Parsing spec derived from reading Pumperly (GPL-3.0). **Spec only: we describe the
+page format in our own docs and write our own parser. No code is copied**, keeping
+this repo's licensing clean.
+
+Full parsing contract lives in `docs/SCRAPER.md`.
 
 ## Scope
 
 **v1**
-- Poller: fetch all stations within radius of Helsinki center, store price reports in SQLite
-- One-time backfill: 14 days of per-station history on first run (dashboard is useful on day one)
-- Export: SQLite → JSON files for the dashboard
-- Dashboard (static HTML + Chart.js):
-  1. Current price table, sorted by price, colored vs each station's 7-day average
-  2. Per-station price trend chart with station picker
-  3. Area median trend lines for 95 / 98 / dsl
-- GH Actions cron running poller + export + commit, GH Pages serving the dashboard
+- Poller on GH Actions cron, every 12 h, scrapes configured polttoaine.net pages
+- SQLite DB + exported JSON committed back to the repo
+- Dashboard: current prices sorted, colored vs each station's 7-day average;
+  per-station trend chart with picker; area median lines for 95E10 / 98E / Diesel
 
-**v2 (needs weeks of accumulated data — do not build yet)**
-- Day-of-week / time-of-day price pattern heatmap
-- "Fill now or wait" indicator based on recent trend direction
+**v2 (deferred until weeks of data exist)**
+- Day-of-week / price-cycle heatmap
+- "Fill now or wait" signal
 
-## Decisions and rationale
+No backfill exists in this source (5 days visible, date-only resolution), so history
+accumulates from the first poll onward. v2 waits accordingly.
+
+## Decisions
 
 | Decision | Choice | Why |
 |---|---|---|
-| Data source | Tankille reverse-engineered API (`api.tankille.fi`) | Structured JSON, best coverage, user already has an account. polttoaine.net rejected: HTML scraping, 5-day retention, no station IDs. |
-| Client language | Python, sync `requests`, ~100 lines | Adapted from the existing Python client in `aarooh/ha-tankille-deprecated` (aiohttp, 442 lines) — simplify, don't reinvent. Matches user's stack. |
-| Fuels | Ingest ALL fuel tags, display 95/98/dsl | Storage is free (same API response). Never filter at ingest; filter at export/display. |
-| Area | 15 km radius from Helsinki center, config value | Covers Helsinki + edges of Espoo/Vantaa. Changeable without schema changes. |
-| Storage | SQLite, committed to the repo | Few MB/year. Committing doubles as backup. See schema below. |
-| Dedupe | `UNIQUE(station_id, fuel, updated)` | API price entries carry their report timestamp, so identical reports insert-or-ignore cleanly. |
-| Privacy | Drop the API's `reporter` field at ingest | Public repo must not republish Tankille user IDs. |
-| Runner | GH Actions cron, every 3 hours | Free, runs with PC off, deterministic script needs no LLM. Claude Code Routine rejected: spends agent usage on a dumb cron job and requires the machine awake. Local Task Scheduler rejected: PC-dependent. |
-| Politeness | 3 h interval, one location request per poll, identifiable User-Agent | Unofficial API, tolerated not blessed. Be chill; don't get it killed for everyone. |
-| Hosting | GH Pages via official Pages actions, site in `site/` | Same repo as the Action, zero extra services. Cloudflare Pages works identically but adds nothing. `site/` not `docs/` because plan docs live in `docs/` and must not be published. |
-| Secrets | `.env` locally (gitignored), Actions secrets in CI | Same pattern as market-advisor's gitignored portfolio. Credentials never touch git. |
-| Charts | Chart.js | User's existing pattern (tech-digest, news-summarizer). |
+| Source | Scrape polttoaine.net | Tankille blocked us; polttoaine is public HTML, no auth, widest crowdsourced coverage (~395 stations) |
+| Pumperly usage | Spec only, never code | Pumperly is GPL-3.0; copying code would infect the repo. Page-format facts are not copyrightable |
+| Ingest scope | Ingest every row from every configured page, no geographic filter at ingest | More data is strictly better; filtering at ingest throws away history we can never recover |
+| Geographic filter | 15 km radius from Helsinki center applied at display time, config value in the dashboard | Keeps the DB complete while the UI stays focused; radius can change later without data loss |
+| Old Tankille schema | Dropped, clean DB | Tankille is not coming back soon; its ID space and timestamp semantics don't map to polttoaine anyway |
+| Dedupe key | `UNIQUE(station_id, fuel, date)`, same-day re-poll overwrites price | Source has date-only resolution (DD.MM.), no timestamps; latest seen value per day is the best available truth |
+| Poll cadence | Every 12 h, 100 ms between page requests, honest User-Agent | Matches Pumperly's observed politeness; with 5-day visibility 12 h loses nothing |
+| Coordinates | Cached in a `stations` table, fetched once per new station | Coords are static; refetching per poll is wasted load on their server |
+| Coord source | Test `ajax.php?act=map` first (all locations in one call), fallback to per-station map page parse | One request beats N map-page fetches if the endpoint pans out |
+| Poller runtime | Plain Python script, no LLM | Deterministic parsing needs no model; decision carried over from the original plan (Claude Code Routine rejected: shouldn't depend on the PC being on) |
+| Hosting | GH Actions cron + GH Pages serving `site/`, never `docs/` | Free, no server, already the plan; plan docs live in `docs/` and must not be published |
 
 ## Architecture
 
 ```
-                 every 3 h (GH Actions cron)
-                 ┌─────────────────────────────────────┐
- api.tankille.fi │  poller.py ──► tankille.db (SQLite) │
-   (1 request)   │                     │               │
-                 │  export.py ◄────────┘               │
-                 │      │                              │
-                 │      ▼                              │
-                 │  site/data/*.json                   │
-                 │      │                              │
-                 │  git commit db + json               │
-                 └──────┼──────────────────────────────┘
-                        ▼
-                 GH Pages deploy (site/ → static dashboard)
+GH Actions cron (12 h)
+  └─ poller.py
+       ├─ GET configured polttoaine.net pages (100 ms apart)
+       ├─ parse rows            → docs/SCRAPER.md is the contract
+       ├─ resolve new stations  → stations table (cached coords)
+       ├─ upsert prices         → fuel.db (SQLite)
+       ├─ export site/data/*.json  (all stations, coords included)
+       └─ commit DB + JSON back to repo
+
+GH Pages ── serves site/ ── index.html + Chart.js
+                              └─ reads site/data/*.json
+                              └─ applies 15 km display radius (config)
 ```
-
-Only `poller.py` talks to the API. Only `export.py` reads the DB for output. The
-dashboard reads only `site/data/*.json` — it never sees the DB.
-
-## SQLite schema
-
-```sql
-CREATE TABLE stations (
-  id      TEXT PRIMARY KEY,   -- Tankille _id
-  name    TEXT NOT NULL,
-  chain   TEXT,
-  brand   TEXT,
-  street  TEXT,
-  city    TEXT,
-  lat     REAL,
-  lon     REAL
-);
-
-CREATE TABLE prices (
-  station_id TEXT NOT NULL REFERENCES stations(id),
-  fuel       TEXT NOT NULL,     -- API tag: 95, 98, dsl, hvo, ngas, ...
-  price      REAL NOT NULL,
-  updated    TEXT NOT NULL,     -- report timestamp from API
-  fetched_at TEXT NOT NULL,     -- when the poller saw it
-  UNIQUE (station_id, fuel, updated)
-);
--- No reporter column. Deliberate. Do not add it.
-```
-
-## Export contract (site/data/)
-
-- `current.json` — latest price per station per fuel, plus each station's 7-day
-  average for the color coding, plus station metadata
-- `stations/<id>.json` — full price series per station (or one combined file if
-  size allows; decide at build time, keep the dashboard code agnostic via a tiny
-  fetch helper)
-- `median.json` — daily area median per fuel (95/98/dsl) over full history
-- `meta.json` — last poll time, station count, radius
 
 ## Build order
 
-1. `tankille_client.py` — login/refresh/get_stations_by_location/get_station_prices
-2. `poller.py` + schema init + dedupe insert
-3. Backfill path (empty DB → per-station 14-day history, ~100–150 requests, once)
-4. `export.py` → JSON contract above
-5. Dashboard v1 (three views)
-6. `.github/workflows/poll.yml` (cron + commit) and Pages deploy workflow
-7. Run locally once to seed the DB, push, verify cron and Pages
-
-## Known gotchas
-
-- Access token lives 12 h; refresh via `/auth/refresh`, cache ~10 h (upstream clients do this)
-- GH disables cron schedules after ~60 days of repo inactivity; the workflow's own
-  commits count as activity, so a working poller keeps itself alive — but if it ever
-  breaks silently, the schedule can die with it. `meta.json`'s last-poll timestamp on
-  the dashboard is the freshness check.
-- Login `device` string matters — upstream reported "Device blacklisted" errors on
-  some strings; reuse the one from the HA client
-- Cron drift of 5–15 min is normal and irrelevant here
+1. Manual robots.txt + terms check on polttoaine.net (open item below, blocks everything)
+2. Parser: fetch one city page, parse rows to dicts, unit-test against saved HTML fixtures
+3. Coordinate resolution: test `ajax.php?act=map`, else map-page parse; `stations` table
+4. SQLite schema + upsert + dedupe
+5. JSON export
+6. GH Actions workflow: cron, run poller, commit
+7. Dashboard v1 views
+8. Let data accumulate; revisit v2
 
 ## Open items
 
-- Repo name (suggestion: `helsinki-fuel-dash`)
-- Exact Helsinki center coordinates for the radius (pick at build time)
-- Single vs per-station JSON split for series data (decide by file size at build time)
+- **robots.txt and terms of polttoaine.net not yet checked.** Manual browser check
+  required before the first crawl. If disallowed, project needs a new source, full stop.
+- `ajax.php?act=map` endpoint unverified: one test fetch decides the coord strategy.
+- Exact page list for coverage (Helsinki + PK-Seutu + Kehä I + Kehä III as starting
+  set) may grow; it's a config list.

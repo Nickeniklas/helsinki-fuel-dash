@@ -1,41 +1,44 @@
-# CLAUDE.md
+# CLAUDE.md — helsinki-fuel-dash
 
-Helsinki fuel price tracker. Polls the unofficial Tankille API on a GH Actions cron,
-accumulates history in SQLite, publishes a static Chart.js dashboard on GH Pages.
-Full plan: `docs/PLAN.md`. API contract: `docs/API.md`. Read both before coding.
+Personal fuel price tracker for the Helsinki area. Poller scrapes polttoaine.net
+into SQLite on a GH Actions cron, exports JSON, static Chart.js dashboard on
+GH Pages reads it. Full plan: `docs/PLAN.md`. Scraper contract: `docs/SCRAPER.md`.
 
-## Stack (decided — do not re-litigate without being asked)
+## Decided stack (do not re-litigate without being asked)
 
-Python + `requests` + SQLite for the poller. Static HTML + Chart.js in `site/` for
-the dashboard. GH Actions cron (3 h) runs poller + export + commit. GH Pages serves
-`site/` via the official Pages actions.
+Python + requests + BeautifulSoup-or-similar, SQLite, GH Actions cron (12 h),
+GH Pages serving `site/`, Chart.js, vanilla JS. No frameworks, no LLM in the poller.
+
+History note: the project originally targeted the unofficial Tankille API. It
+blocked us (2026-07-08) and was dropped entirely, clean DB, no workarounds. Do not
+suggest going back to it.
 
 ## Hard rules
 
-- Credentials live in `.env` (gitignored) locally and Actions secrets in CI.
-  Never in code, never committed, never printed in logs.
-- Drop the API's `reporter` field at ingest. No reporter column exists. Do not add one.
-- Ingest ALL fuel tags. Filtering to 95/98/dsl happens only in export/display.
-- Be polite to the API: one location request per poll, 3 h cadence, honest User-Agent,
-  no retry storms. This is an unofficial API — don't get it killed.
-- The dashboard reads only `site/data/*.json`. It never touches the DB.
-- Plan docs stay in `docs/`, site in `site/` — `docs/` must never be published by Pages.
-- No autonomous git commits or pushes during development sessions. The Actions
-  workflow bot commits on schedule; that is the only automated committer.
+- **Never commit or push autonomously.** Global rule, no exceptions.
+- **Pumperly (GPL-3.0) is spec only.** Never copy, port, or paraphrase its code.
+  The page format facts live in `docs/SCRAPER.md`; code against that doc.
+- **Politeness is non-negotiable:** 12 h cadence, 100 ms between requests, honest
+  User-Agent, respect robots.txt. This is someone else's crowdsourced site.
+- Ingest everything from the configured pages. Geographic filtering (15 km radius)
+  happens only at display time in the dashboard.
+- Dedupe key is `(station_id, fuel, date)`, latest price wins within a day.
+- GH Pages serves `site/`, never `docs/`.
+- No credentials exist anymore (no auth needed); if any secret ever appears, it
+  goes in gitignored `.env` / Actions secrets.
 
 ## Build order
 
-1. `tankille_client.py` (auth + two GET endpoints, see docs/API.md)
-2. `poller.py` + schema init + `INSERT OR IGNORE` dedupe
-3. First-run backfill (14-day per-station history)
-4. `export.py` → JSON contract in docs/PLAN.md
-5. Dashboard v1: current table w/ 7d-avg coloring, per-station trend, area medians
-6. Workflows: cron poll+commit, Pages deploy
-7. v2 (heatmap, fill-now signal) is deferred — needs weeks of data. Do not build.
+robots.txt check (manual, blocks all crawling) → parser with HTML fixtures →
+coordinate resolution (`ajax.php?act=map` test first) → schema + upsert →
+JSON export → Actions workflow → dashboard v1. v2 (heatmap, fill-now-or-wait
+signal) waits until weeks of data exist.
 
 ## Gotchas
 
-- Access token: 12 h lifetime, cache ~10 h, refresh via `/auth/refresh`
-- Login `device` string can get blacklisted — use the one in docs/API.md
-- `location=` query param is **lon,lat**, not lat,lon
-- GH cron schedules die after ~60 days of repo inactivity; self-commits keep it alive
+- `DD.MM.` dates have no year: resolve with the rollover rule in `docs/SCRAPER.md`
+- Regional pages omit the `E10` class on rows: parse by 5-td count, not class
+- Strip the `*` / `<span class="E99">` V-Power marker from 98E cells
+- Skip rows without a map link (~5–8 %, no station ID)
+- Sanity bounds: price 0.80–4.00 EUR, Finland bbox lat 59.7–70.1, lon 20.5–31.6
+- No backfill is possible: history starts at first poll, 5 days visible at most
