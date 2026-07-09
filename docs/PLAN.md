@@ -50,7 +50,7 @@ accumulates from the first poll onward. v2 waits accordingly.
 | Dedupe key | `UNIQUE(station_id, fuel, date)`, same-day re-poll overwrites price | Source has date-only resolution (DD.MM.), no timestamps; latest seen value per day is the best available truth |
 | Poll cadence | Every 12 h, 100 ms between page requests, honest User-Agent | Matches Pumperly's observed politeness; with 5-day visibility 12 h loses nothing |
 | Coordinates | Cached in a `stations` table, fetched once per new station | Coords are static; refetching per poll is wasted load on their server |
-| Coord source | Test `ajax.php?act=map` first (all locations in one call), fallback to per-station map page parse | One request beats N map-page fetches if the endpoint pans out |
+| Coord source | Per-station map page parse | `ajax.php?act=map` bulk endpoint tested 2026-07-09, returns empty under every param/method/header combo tried — not usable. N map-page fetches it is, cached forever per station |
 | Poller runtime | Plain Python script, no LLM | Deterministic parsing needs no model; decision carried over from the original plan (Claude Code Routine rejected: shouldn't depend on the PC being on) |
 | Hosting | GH Actions cron + GH Pages serving `site/`, never `docs/` | Free, no server, already the plan; plan docs live in `docs/` and must not be published |
 
@@ -84,6 +84,11 @@ GH Pages ── serves site/ ── index.html + Chart.js
 
 ## Open items
 
-- `ajax.php?act=map` endpoint unverified: one test fetch decides the coord strategy.
 - Exact page list for coverage (Helsinki + PK-Seutu + Kehä I + Kehä III as starting
   set) may grow; it's a config list.
+
+## Resolved
+
+- `ajax.php?act=map` tested 2026-07-09: doesn't work (empty body under every param
+  combination tried). Coord strategy is the per-station map-page fallback instead.
+  Detail in `docs/SCRAPER.md`.

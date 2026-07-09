@@ -17,10 +17,11 @@ that's wrong for cities and highways, checked in below):
   failure mode, don't mistake it for "no stations".
 - **Regional "seutu" pages: query style**, `index.php?t=<name>`. Verified: `?t=PK-Seutu`.
   Path style (`/PK-Seutu`) does not work for these.
-- Starting set: `/Helsinki`, `index.php?t=PK-Seutu`, `/Keha_%20I`, `/Keha_%20III%20(E18)`
-  (untested, same `Keha_ I` pattern expected — verify before adding to the poller
-  config). Dedupe stations across pages by station ID; the same station appears on
-  multiple pages.
+- Starting set: `/Helsinki`, `index.php?t=PK-Seutu`, `/Keha_%20I`,
+  `/Keha_%20III%20(E18)`. All four verified live 2026-07-09 (Kehä III (E18) returns
+  25 KB with 7 distinct station IDs — real data, not the blank-page failure mode).
+  Dedupe stations across pages by station ID; the same station appears on multiple
+  pages.
 
 ## Row format
 
@@ -67,10 +68,21 @@ Source gives `DD.MM.` only. Resolve year at parse time:
 ## Coordinates
 
 - Static per station → fetch **once**, cache in `stations` table, never refetch.
-- Preferred (unverified, test first): `ajax.php` with `act=map` returns all station
-  locations without prices in one call.
-- Fallback: per-station map page, parse `new google.maps.LatLng(lat, lon)`;
-  secondary fallback `lat:'..'` / `lon:'..'` patterns.
+- `ajax.php?act=map` **tested 2026-07-09, does not work**: returns HTTP 200 with a
+  0-byte body for every combination tried (bare `act=map`, `+t=Helsinki`,
+  `+kaupunki=Helsinki`, `+ids=`, GET and POST, with/without
+  `X-Requested-With: XMLHttpRequest`, with/without a session cookie from first
+  loading `/Helsinki`). The homepage's inline/linked JS has no reference to
+  `ajax.php` at all — this endpoint doesn't appear to be wired up to anything on
+  the pages we crawl. Do not rely on it; use the per-station page.
+- **Coordinate source: per-station map page**, `index.php?cmd=map&id=<id>`.
+  Confirmed working 2026-07-09 (station 1051 → 25.8 KB page). Parse
+  `new google.maps.LatLng(60.156120, 24.883408)` (verified present); secondary
+  fallback pattern `lat: '..'` / `lon: '..'` string literals, also present on the
+  same page and useful if the LatLng call gets minified/changed later.
+- This is N requests (one per new station) instead of one bulk call — same 100 ms
+  politeness spacing as page crawling applies here too. Coords are cached forever
+  once fetched, so this cost is paid once per station, not once per poll.
 
 ## Schema
 
