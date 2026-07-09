@@ -1,30 +1,34 @@
 # helsinki-fuel-dash
 
-Fuel price tracker for the Helsinki area. Polls the unofficial Tankille API every
-3 hours via GitHub Actions, accumulates price history in SQLite, and publishes a
-static Chart.js dashboard on GitHub Pages: current prices sorted cheapest-first,
-per-station price history, and area median trends for 95E10 / 98E5 / diesel.
+Personal fuel price tracker for the Helsinki area. Scrapes the crowdsourced site
+polttoaine.net on a 12 h GitHub Actions cron, accumulates price history in SQLite,
+and will publish a static Chart.js dashboard on GitHub Pages: current prices sorted
+cheapest-first, per-station price history, and area median trends for 95E10 / 98E /
+diesel.
 
-Full design: [docs/PLAN.md](docs/PLAN.md) · API contract: [docs/API.md](docs/API.md)
+No auth, no API key, no credentials needed anywhere in this project.
+
+Full design: [docs/PLAN.md](docs/PLAN.md) · Scraper contract: [docs/SCRAPER.md](docs/SCRAPER.md)
+
+## Status
+
+Build order (see `docs/PLAN.md`) is at step 2 of 8: the polttoaine.net parser is
+written and unit-tested against saved HTML fixtures. Coordinate resolution, the
+SQLite schema, JSON export, the Actions workflow, and the dashboard don't exist yet.
 
 ## Local setup
 
 ```
 pip install -r requirements.txt
-cp .env.example .env      # fill in your Tankille account credentials
-python poller.py          # first run backfills 14 days of history
-python export.py
+python -m unittest discover -s tests -t .
 ```
 
-Then open `site/index.html` via any static file server, e.g.
-`python -m http.server -d site` → http://localhost:8000
+There's no poller or dashboard to run yet — `parser.py` currently exposes
+`parse_page()` (HTML → list of price-row dicts) and `fetch_page()` (polite GET with
+the project's honest User-Agent, decoded per docs/SCRAPER.md).
 
-## CI setup
+## Politeness
 
-1. Configure repo secrets **TANKILLE_EMAIL** and **TANKILLE_PASSWORD**.
-2. Repo Settings → Pages → Source: **GitHub Actions**.
-3. Workflows: `poll.yml` (3 h cron: poll → export → `[bot] poll` commit → Pages
-   deploy) and `pages.yml` (Pages deploy on manual pushes touching `site/`).
-
-Be polite to the API — it's unofficial. One location request per poll, honest
-User-Agent, no retry storms. Don't shorten the cron interval.
+12 h poll cadence, 100 ms between page requests, honest User-Agent, robots.txt
+respected — see `docs/SCRAPER.md` for the full contract. This is someone else's
+crowdsourced site; don't shorten the cadence.
