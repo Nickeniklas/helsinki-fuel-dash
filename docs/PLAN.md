@@ -57,14 +57,16 @@ accumulates from the first poll onward. v2 waits accordingly.
 ## Architecture
 
 ```
-GH Actions cron (12 h)
-  └─ poller.py
-       ├─ GET configured polttoaine.net pages (100 ms apart)
-       ├─ parse rows            → docs/SCRAPER.md is the contract
-       ├─ resolve new stations  → stations table (cached coords)
-       ├─ upsert prices         → fuel.db (SQLite)
-       ├─ export site/data/*.json  (all stations, coords included)
-       └─ commit DB + JSON back to repo
+GH Actions cron (12 h)          .github/workflows/poll.yml
+  ├─ poll.py
+  │    ├─ GET configured polttoaine.net pages (100 ms apart)
+  │    ├─ parse rows            → docs/SCRAPER.md is the contract
+  │    ├─ resolve new stations  → stations table (cached coords)
+  │    └─ upsert prices         → fuel.db (SQLite)
+  ├─ export.py
+  │    └─ write site/data/*.json  (all stations, coords included — shapes in site/data/README.md)
+  └─ commit fuel.db + site/data/*.json back to repo, then deploy Pages
+       (own deploy job: GITHUB_TOKEN pushes don't trigger pages.yml's push trigger)
 
 GH Pages ── serves site/ ── index.html + Chart.js
                               └─ reads site/data/*.json
@@ -75,12 +77,13 @@ GH Pages ── serves site/ ── index.html + Chart.js
 
 1. Manual robots.txt + terms check on polttoaine.net (done, 2026-07-09: `ajax.php`
    isn't disallowed; nothing else in the crawl path is either)
-2. Parser: fetch one city page, parse rows to dicts, unit-test against saved HTML fixtures
-3. Coordinate resolution: test `ajax.php?act=map`, else map-page parse; `stations` table
-4. SQLite schema + upsert + dedupe
-5. JSON export
-6. GH Actions workflow: cron, run poller, commit
-7. Dashboard v1 views
+2. Parser: fetch one city page, parse rows to dicts, unit-test against saved HTML fixtures (done)
+3. Coordinate resolution: test `ajax.php?act=map`, else map-page parse; `stations` table (done)
+4. SQLite schema + upsert + dedupe (done)
+5. JSON export (done, 2026-07-10: `export.py`, 14 unit tests)
+6. GH Actions workflow: cron, run poller, commit (done, 2026-07-10:
+   `.github/workflows/poll.yml`, not yet committed or run live)
+7. Dashboard v1 views (next)
 8. Let data accumulate; revisit v2
 
 ## Open items
@@ -95,5 +98,12 @@ GH Pages ── serves site/ ── index.html + Chart.js
   Detail in `docs/SCRAPER.md`.
 - First live poll run 2026-07-09: succeeded end to end. `fuel.db` has 76 stations
   (coords backfilled for all of them) and 224 price rows spanning all 5 dates in
-  the source's visibility window. Build order is at step 4 of 8 (schema + upsert);
-  JSON export and the Actions workflow are next.
+  the source's visibility window.
+- JSON export + GH Actions workflow built 2026-07-10: `export.py` writes
+  `site/data/{stations,history,medians}.json` (shapes in `site/data/README.md`,
+  14 new unit tests, 52 total passing). `.github/workflows/poll.yml` runs
+  poll → export → commit → deploy Pages, sharing the `pages` concurrency group
+  with `pages.yml` (GITHUB_TOKEN pushes don't trigger `pages.yml`'s own push
+  trigger, so `poll.yml` needs its own deploy job). Neither file is committed
+  yet — awaiting manual commit and one `workflow_dispatch` run to verify live
+  before trusting the cron. Build order is at step 6 of 8; dashboard v1 is next.

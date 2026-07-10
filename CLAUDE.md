@@ -32,8 +32,12 @@ suggest going back to it.
 robots.txt check (done) → parser with HTML fixtures (done) → coordinate
 resolution (done, per-station map page — `ajax.php?act=map` bulk endpoint is
 dead) → schema + upsert (done) → first live poll (done, 2026-07-09: 76
-stations, 224 prices) → **JSON export → Actions workflow → dashboard v1**
-(next). v2 (heatmap, fill-now-or-wait signal) waits until weeks of data exist.
+stations, 224 prices) → JSON export (done, 2026-07-10: `export.py`, 14 unit
+tests) → Actions workflow (done, 2026-07-10: `.github/workflows/poll.yml`,
+not yet committed or run live — next step is committing, then a
+`workflow_dispatch` verification run before trusting the cron) →
+**dashboard v1** (next). v2 (heatmap, fill-now-or-wait signal) waits until
+weeks of data exist.
 
 ## Gotchas
 
@@ -47,3 +51,7 @@ stations, 224 prices) → **JSON export → Actions workflow → dashboard v1**
   with an empty body, tested every param/method/header combo. Coords come
   from the per-station map page (`index.php?cmd=map&id=<id>`) instead, one
   request per new station, cached forever. Detail: `docs/SCRAPER.md`.
+- GITHUB_TOKEN-authored pushes don't trigger other workflows' `push` triggers
+  — `poll.yml`'s commit of `fuel.db`/`site/data/*.json` won't fire `pages.yml`
+  even though it touches `site/**`. `poll.yml` has its own deploy job instead,
+  sharing the `pages` concurrency group with `pages.yml` so they never race.

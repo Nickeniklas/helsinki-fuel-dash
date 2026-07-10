@@ -118,6 +118,10 @@ station/fuel/day, same-day changes overwrite to the latest seen value.
 
 ## Export
 
-Poller writes `site/data/*.json`: all stations with coords, current prices,
-per-station history, area medians. No geographic filtering here; the dashboard
-applies the 15 km display radius client-side (config).
+`export.py` (run after `poll.py`, both invoked by `.github/workflows/poll.yml`)
+reads `fuel.db` and writes `site/data/stations.json` (all stations, coords,
+latest price per fuel), `site/data/history.json` (per-station price history),
+and `site/data/medians.json` (daily area median per fuel). Exact shapes are
+documented in `site/data/README.md`, written by the same script. No
+geographic filtering here; the dashboard applies the 15 km display radius
+client-side (config).

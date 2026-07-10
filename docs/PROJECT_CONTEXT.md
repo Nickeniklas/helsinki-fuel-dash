@@ -2,11 +2,15 @@ PROJECT CONTEXT — helsinki-fuel-dash
 Paste-ready summary for the Claude project. Condensed from docs/PLAN.md (replanned
 2026-07-08); if the plan changes, update both.
 
-Status (2026-07-09): parser, coordinate resolution, SQLite schema/upsert, and the
-poller (poll.py) are built and unit-tested, and the first live poll against the
-real site succeeded — fuel.db has 76 stations (all geocoded) and 224 price rows
-across the full 5-day visibility window. Next: JSON export, the GH Actions
-workflow, then the dashboard.
+Status (2026-07-10): parser, coordinate resolution, SQLite schema/upsert, the
+poller (poll.py), JSON export (export.py), and the GH Actions poll+deploy
+workflow (.github/workflows/poll.yml) are all built and unit-tested (52 tests
+passing). The first live poll against the real site succeeded (2026-07-09) —
+fuel.db has 76 stations (all geocoded) and 224 price rows across the full
+5-day visibility window. Build order is at step 6 of 8: export.py and
+poll.yml exist but aren't committed or run live yet — next is a manual
+commit plus one workflow_dispatch run to verify the workflow before trusting
+the cron, then the dashboard.
 The project
 Niklas (GitHub: Nickeniklas) is building a personal fuel price tracker for the
 Helsinki area. No service provides long-term price trends or a sorted area-wide
@@ -20,16 +24,25 @@ Source: scraping polttoaine.net, an independent crowdsourced price site
 (~395 active stations, reports visible 5 days, plain HTML, no auth). Parsing
 spec derived from Pumperly (GPL-3.0), spec only, no code copied, and
 documented in docs/SCRAPER.md.
-Poller: Python + requests + SQLite, GH Actions cron every 12 h, commits the
-DB and exported JSON back to the repo. Crawls a config list of pages (starting:
-Helsinki, PK-Seutu, Kehä I, Kehä III), dedupes stations across pages by the
-cmd=map&id= station ID. No backfill exists in this source, so history
-accumulates from the first poll.
+Poller: Python + requests + SQLite (poll.py), GH Actions cron every 12 h.
+Crawls a config list of pages (starting: Helsinki, PK-Seutu, Kehä I, Kehä
+III), dedupes stations across pages by the cmd=map&id= station ID. No
+backfill exists in this source, so history accumulates from the first poll.
+Export: export.py reads fuel.db and writes site/data/stations.json (all
+stations, coords, latest price per fuel), site/data/history.json
+(per-station history), and site/data/medians.json (daily area median per
+fuel) — exact shapes in site/data/README.md.
+Workflow: .github/workflows/poll.yml runs poll.py, then export.py, commits
+fuel.db + site/data/*.json back to main (skipped if nothing changed), then
+deploys site/ to GH Pages in the same run. It shares the "pages" concurrency
+group with pages.yml, because GITHUB_TOKEN-authored pushes don't trigger
+other workflows' push triggers — poll.yml has to do its own deploy.
 Dashboard: static HTML + Chart.js in site/, served by GH Pages, reading
 only site/data/*.json. v1 views: current prices sorted with color vs each
 station's 7-day average, per-station trend chart with picker, area median lines
 for 95/98/dsl. v2 (deferred until weeks of data exist): day-of-week heatmap,
-"fill now or wait" signal.
+"fill now or wait" signal. Not yet built — next up after the workflow is
+verified live.
 
 Key decisions and rules
 
@@ -48,6 +61,9 @@ Politeness is hard policy: 12 h cadence, 100 ms between requests, honest
 User-Agent, respect robots.txt (someone else's crowdsourced site)
 GH Pages serves site/, never docs/ (plan docs live there)
 No LLM in the poller (deterministic script; Claude Code Routine rejected)
+GITHUB_TOKEN-authored pushes don't trigger other workflows' push triggers, so
+poll.yml can't rely on pages.yml firing after its commit — it has its own
+deploy job instead, sharing the "pages" concurrency group
 
 Niklas's working context
 Builds with Claude Code on Windows. Comfortable with Python, SQLite, Git, GH

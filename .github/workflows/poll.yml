@@ -1,0 +1,72 @@
+name: Poll and Deploy
+
+# Cron poll of polttoaine.net, JSON export, commit back to main, then deploy
+# Pages from site/. GITHUB_TOKEN pushes don't trigger pages.yml (push paths
+# filter on site/**, and token-authored pushes are excluded from triggering
+# other workflows anyway), so this workflow does its own deploy job, reusing
+# the "pages" concurrency group so the two workflows never deploy at once.
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Run poller
+        run: python poll.py
+
+      - name: Export JSON
+        run: python export.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add fuel.db site/data
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "poll: update fuel prices $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+  deploy:
+    needs: poll
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

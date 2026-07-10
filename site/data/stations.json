@@ -1,0 +1,1510 @@
+[
+  {
+    "station_id": 84,
+    "name": "ABC, Nihtisilta 4",
+    "lat": 60.207012,
+    "lon": 24.753611,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.088
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.178
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.11
+      }
+    }
+  },
+  {
+    "station_id": 294,
+    "name": "ABC, Prisma Jumbo Vantaanportinkatu 3",
+    "lat": 60.290691,
+    "lon": 24.962154,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 1.92
+      },
+      "98": null,
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 1.944
+      }
+    }
+  },
+  {
+    "station_id": 314,
+    "name": "Espoo, St1, Auroranportti Kylänportti 16",
+    "lat": 60.240177,
+    "lon": 24.701097,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.969
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 2.079
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.979
+      }
+    }
+  },
+  {
+    "station_id": 318,
+    "name": "St1, Olarinluoma Olarinluoma 17 (re85 1.450)",
+    "lat": 60.180447,
+    "lon": 24.76004,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.199
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 2.124
+      }
+    }
+  },
+  {
+    "station_id": 320,
+    "name": "St1, Suomenoja Martinsillantie 10 (re85 1.399)",
+    "lat": 60.1604,
+    "lon": 24.694334,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 2.132
+      },
+      "98": null,
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 2.153
+      }
+    }
+  },
+  {
+    "station_id": 542,
+    "name": "Vantaa, St1, Petikko Tiilipojanlenkki 2 (Re85 1.541)",
+    "lat": 60.2775,
+    "lon": 24.810915,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.909
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 2.009
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.931
+      }
+    }
+  },
+  {
+    "station_id": 543,
+    "name": "St1, Rajatorppa Köysikuja 1",
+    "lat": 60.253044,
+    "lon": 24.821852,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.895
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.995
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.921
+      }
+    }
+  },
+  {
+    "station_id": 545,
+    "name": "Vantaa, St1, Veromies Virkatie 7",
+    "lat": 60.297413,
+    "lon": 24.952492,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.069
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.169
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.069
+      }
+    }
+  },
+  {
+    "station_id": 791,
+    "name": "Neste, Tammisto Valimotie 10",
+    "lat": 60.276947,
+    "lon": 24.970331,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.109
+      },
+      "98": null,
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.139
+      }
+    }
+  },
+  {
+    "station_id": 1029,
+    "name": "St1, Mikkola Venuksenkuja 4",
+    "lat": 60.343868,
+    "lon": 25.099625,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.918
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.018
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.948
+      }
+    }
+  },
+  {
+    "station_id": 1030,
+    "name": "St1, Rajatorppa Torpantie 4",
+    "lat": 60.255116,
+    "lon": 24.828255,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.895
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.995
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.921
+      }
+    }
+  },
+  {
+    "station_id": 1034,
+    "name": "St1, Sepänkylä Palomiehentie 2 (*E99+)",
+    "lat": 60.208817,
+    "lon": 24.743057,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.069
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.169
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.094
+      }
+    }
+  },
+  {
+    "station_id": 1035,
+    "name": "St1, Bemböle Bellinmäki 2, 110-tie",
+    "lat": 60.22303,
+    "lon": 24.67284,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.969
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 2.069
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.979
+      }
+    }
+  },
+  {
+    "station_id": 1037,
+    "name": "St1, Lahnus Lahnuksentie 2",
+    "lat": 60.316883,
+    "lon": 24.715582,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.955
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 2.055
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.947
+      }
+    }
+  },
+  {
+    "station_id": 1042,
+    "name": "Espoo, St1, Vallikallio Vallikallionkatu 9 (E85 1.609)",
+    "lat": 60.22728,
+    "lon": 24.823635,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 2.104
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 2.204
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 2.133
+      }
+    }
+  },
+  {
+    "station_id": 1043,
+    "name": "Helsinki, St1, Ala-Tikkurila Härkävaljakontie 30 (E85 1.626) (*Vpower)",
+    "lat": 60.283749,
+    "lon": 25.030268,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.859
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.959
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.869
+      }
+    }
+  },
+  {
+    "station_id": 1045,
+    "name": "St1, Etelä-Haaga Vihdintie 21 (Re85 1.649)",
+    "lat": 60.213032,
+    "lon": 24.886396,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.953
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.053
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.953
+      }
+    }
+  },
+  {
+    "station_id": 1048,
+    "name": "St1, Konala Ristipellontie 18 (E85 1.369) (*E99+)",
+    "lat": 60.24173,
+    "lon": 24.843805,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.943
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.043
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.943
+      }
+    }
+  },
+  {
+    "station_id": 1051,
+    "name": "St1, Lauttasaari Heikkiläntie 12",
+    "lat": 60.15612,
+    "lon": 24.883408,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.199
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.129
+      }
+    }
+  },
+  {
+    "station_id": 1119,
+    "name": "Helsinki, Seo, Pukinmäki Pukinmäenkaari 55",
+    "lat": 60.243042,
+    "lon": 24.979618,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.969
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 2.069
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.989
+      }
+    }
+  },
+  {
+    "station_id": 1617,
+    "name": "Neste Oil Express, Lommila Lommilanrinne 1",
+    "lat": 60.218662,
+    "lon": 24.659849,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1618,
+    "name": "Neste Express, Mankkaa Sinikalliontie 1-3, 1-tie",
+    "lat": 60.203949,
+    "lon": 24.766302,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1622,
+    "name": "Neste Oil Express, Konala Malminkartanontie 3",
+    "lat": 60.244991,
+    "lon": 24.848866,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.938
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.043
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.938
+      }
+    }
+  },
+  {
+    "station_id": 1629,
+    "name": "Neste Oil Express, Ruoholahti Salmisaarenkatu 2",
+    "lat": 60.164433,
+    "lon": 24.907574,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1630,
+    "name": "Neste Express, Tapaninkylä Kirkonkyläntie 47",
+    "lat": 60.258427,
+    "lon": 24.993973,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1631,
+    "name": "Neste Oil Express, Viikki Viikinportti 1 (Pihlajamäentie 4 )",
+    "lat": 60.226871,
+    "lon": 25.009314,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1646,
+    "name": "Neste Oil Express, Kaivoksela Kaivokselantie 1A",
+    "lat": 60.263058,
+    "lon": 24.872274,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1647,
+    "name": "Neste Oil Express, Kuninkaanmäki Kankikuja 2",
+    "lat": 60.307381,
+    "lon": 25.095123,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.209
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.129
+      }
+    }
+  },
+  {
+    "station_id": 1648,
+    "name": "Neste Oil Express, Martinlaakso Martinlaaksontie 1",
+    "lat": 60.277653,
+    "lon": 24.867004,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1651,
+    "name": "Neste Oil Express, Siltamäki Kirkkotie 2",
+    "lat": 60.271717,
+    "lon": 24.975302,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.959
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.069
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.979
+      }
+    }
+  },
+  {
+    "station_id": 1652,
+    "name": "Neste Oil Express, Simonkallio Maitikkakuja 2",
+    "lat": 60.305119,
+    "lon": 25.023335,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1657,
+    "name": "Neste Oil, Espoonlahti Kivenlahdentie 5",
+    "lat": 60.15221,
+    "lon": 24.662596,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1658,
+    "name": "Neste, Matinkylä Gräsanlaakso 2",
+    "lat": 60.163876,
+    "lon": 24.752396,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1659,
+    "name": "Neste, Muurala Nimismiehenpelto 1",
+    "lat": 60.214703,
+    "lon": 24.651867,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 2.047
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 2.157
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 2.009
+      }
+    }
+  },
+  {
+    "station_id": 1661,
+    "name": "Neste Oil, Olari Uuskartanontie 2",
+    "lat": 60.170319,
+    "lon": 24.747358,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1663,
+    "name": "Neste Oil, Suomenoja Martinsillantie 2 B",
+    "lat": 60.161942,
+    "lon": 24.701397,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 2.122
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.232
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 2.143
+      }
+    }
+  },
+  {
+    "station_id": 1667,
+    "name": "Neste Oil Express, Hermanni Hermannin rantatie 18",
+    "lat": 60.192585,
+    "lon": 24.978357,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.209
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.129
+      }
+    }
+  },
+  {
+    "station_id": 1677,
+    "name": "Neste Oil, Munkkiniemi Huopalahdentie 1",
+    "lat": 60.19709,
+    "lon": 24.885168,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1678,
+    "name": "Neste Oil (A), Oulunkylä Siltavoudintie 19",
+    "lat": 60.234486,
+    "lon": 24.966152,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1680,
+    "name": "Neste Oil Express, Sörnäinen Sörnäisten Rantatie 21",
+    "lat": 60.182732,
+    "lon": 24.962326,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.209
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.129
+      }
+    }
+  },
+  {
+    "station_id": 1691,
+    "name": "Neste Oil, Keimola Itä Hämeenlinnanväylä 601, 3-tie",
+    "lat": 60.313534,
+    "lon": 24.839506,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.029
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.139
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.029
+      }
+    }
+  },
+  {
+    "station_id": 1692,
+    "name": "Neste Oil, Keimola Länsi Hämeenlinnanväylä 600, 3-tie",
+    "lat": 60.314095,
+    "lon": 24.842619,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 1.999
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.109
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 1.999
+      }
+    }
+  },
+  {
+    "station_id": 1696,
+    "name": "Neste Oil, Rajatorppa Vapaalantie 1",
+    "lat": 60.255505,
+    "lon": 24.82626,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.179
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.289
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.199
+      }
+    }
+  },
+  {
+    "station_id": 1697,
+    "name": "Vantaa, Neste Oil, Koivuhaka Niittytie 2",
+    "lat": 60.288315,
+    "lon": 24.997097,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.179
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.289
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.199
+      }
+    }
+  },
+  {
+    "station_id": 1698,
+    "name": "Neste Express, Tikkurila Tikkurilantie 46",
+    "lat": 60.289268,
+    "lon": 25.034456,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1700,
+    "name": "Neste Express, Varisto Ulkoniitynkuja 2",
+    "lat": 60.264664,
+    "lon": 24.811556,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1762,
+    "name": "ABC, Mikkelä Mikkelänkallio 1 (E85 1.632)",
+    "lat": 60.208828,
+    "lon": 24.634912,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.961
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 2.051
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.99
+      }
+    }
+  },
+  {
+    "station_id": 1763,
+    "name": "ABC, Niittykumpu Niittymaantie 4 (E85 1.559)",
+    "lat": 60.170643,
+    "lon": 24.776098,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.105
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.195
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.144
+      }
+    }
+  },
+  {
+    "station_id": 1764,
+    "name": "Espoo, ABC Deli, Tapiola Kalevalantie 3 (E85 1.645)",
+    "lat": 60.185463,
+    "lon": 24.808323,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.877
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.967
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.939
+      }
+    }
+  },
+  {
+    "station_id": 1771,
+    "name": "ABC, Käpylä Vähänkyröntie 2",
+    "lat": 60.206974,
+    "lon": 24.946714,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.873
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.963
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.875
+      }
+    }
+  },
+  {
+    "station_id": 1779,
+    "name": "ABC, Sörnäinen Sörnäisten Rantatie 20",
+    "lat": 60.18536,
+    "lon": 24.96739,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.128
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.218
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.168
+      }
+    }
+  },
+  {
+    "station_id": 1927,
+    "name": "ABC Deli, Vaarala Lähdepuistontie 2",
+    "lat": 60.26683,
+    "lon": 25.099579,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.854
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 1.961
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.856
+      }
+    }
+  },
+  {
+    "station_id": 1953,
+    "name": "Ysi5, Nihtisilta Kutojankulma 2",
+    "lat": 60.209309,
+    "lon": 24.752352,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 2.109
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.209
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 2.119
+      }
+    }
+  },
+  {
+    "station_id": 1979,
+    "name": "Helsinki, Neste Oil Express, Ala-Tikkurila Aamuruskontie 2",
+    "lat": 60.283939,
+    "lon": 25.028683,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1980,
+    "name": "Neste Oil Express, Metsola Murmelikuja 3",
+    "lat": 60.345165,
+    "lon": 25.103027,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.908
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.018
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.938
+      }
+    }
+  },
+  {
+    "station_id": 1981,
+    "name": "Neste Oil Express, Myyrmäki Raappavuorentie 2",
+    "lat": 60.258427,
+    "lon": 24.842455,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1983,
+    "name": "Neste Express, Mannerheimintie Reijolankatu 3",
+    "lat": 60.189854,
+    "lon": 24.917404,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": null,
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1986,
+    "name": "Neste Oil Express, Karakallio Tornihaukantie 1",
+    "lat": 60.229401,
+    "lon": 24.776779,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 1999,
+    "name": "St1, Simonkylä Vanamontie 13",
+    "lat": 60.309124,
+    "lon": 25.028214,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.883
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.983
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.873
+      }
+    }
+  },
+  {
+    "station_id": 2015,
+    "name": "Neste Oil Express, Kivenlahti Maininkitie 11",
+    "lat": 60.153236,
+    "lon": 24.648527,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 2216,
+    "name": "Neste Oil, Martinlaakso Vihertie 39",
+    "lat": 60.275635,
+    "lon": 24.854952,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.179
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.289
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.199
+      }
+    }
+  },
+  {
+    "station_id": 2409,
+    "name": "Neste Oil Express, Ansakuja 2",
+    "lat": 60.29517,
+    "lon": 24.923292,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.209
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.129
+      }
+    }
+  },
+  {
+    "station_id": 2429,
+    "name": "Neste Oil Express, Munkkivuori Ulvilantie 6",
+    "lat": 60.203766,
+    "lon": 24.87359,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 2.119
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.229
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 2.139
+      }
+    }
+  },
+  {
+    "station_id": 2471,
+    "name": "Neste Oil Express, Suutarila Lyhtytie 26",
+    "lat": 60.279388,
+    "lon": 25.01133,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 2473,
+    "name": "Vantaa, ABC Deli, Petikko Petikontie 29 (E85 1.535)",
+    "lat": 60.285023,
+    "lon": 24.827084,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.259
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 2634,
+    "name": "Neste Express, Helsinki-Vantaa lentoasema Ilmailukuja 1",
+    "lat": 60.312733,
+    "lon": 24.970806,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.209
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.129
+      }
+    }
+  },
+  {
+    "station_id": 2638,
+    "name": "St1, Mankkaantie 2",
+    "lat": 60.195,
+    "lon": 24.767031,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 2.099
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.199
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 2.124
+      }
+    }
+  },
+  {
+    "station_id": 2740,
+    "name": "ABC, Kivenlahti Kivenlahdentie 7 (E85 1.345)",
+    "lat": 60.153,
+    "lon": 24.65616,
+    "latest": {
+      "95": {
+        "date": "2026-07-05",
+        "price": 1.877
+      },
+      "98": {
+        "date": "2026-07-05",
+        "price": 1.967
+      },
+      "dsl": {
+        "date": "2026-07-05",
+        "price": 1.939
+      }
+    }
+  },
+  {
+    "station_id": 2747,
+    "name": "Neste Oil Express, Ilmakehä Teknobulevardi 1",
+    "lat": 60.306179,
+    "lon": 24.969191,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 2750,
+    "name": "Neste Oil Express, Kauklahti Mänkimiehentie 3",
+    "lat": 60.184971,
+    "lon": 24.601244,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.898
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 2.008
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.896
+      }
+    }
+  },
+  {
+    "station_id": 2760,
+    "name": "ABC, Karaportti Karaniityntie 2 (E85 1.369)",
+    "lat": 60.224316,
+    "lon": 24.759764,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.953
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 2.043
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.97
+      }
+    }
+  },
+  {
+    "station_id": 2763,
+    "name": "Neste Oil Express, Lommila Espoontie 32",
+    "lat": 60.221233,
+    "lon": 24.664961,
+    "latest": {
+      "95": {
+        "date": "2026-07-09",
+        "price": 2.069
+      },
+      "98": {
+        "date": "2026-07-09",
+        "price": 2.179
+      },
+      "dsl": {
+        "date": "2026-07-09",
+        "price": 2.069
+      }
+    }
+  },
+  {
+    "station_id": 2764,
+    "name": "Neste Oil Express, Konala Ristipellontie 11",
+    "lat": 60.239761,
+    "lon": 24.850567,
+    "latest": {
+      "95": {
+        "date": "2026-07-07",
+        "price": 1.933
+      },
+      "98": {
+        "date": "2026-07-07",
+        "price": 2.043
+      },
+      "dsl": {
+        "date": "2026-07-07",
+        "price": 1.933
+      }
+    }
+  },
+  {
+    "station_id": 2786,
+    "name": "Neste Oil Express, Hakkila Tukkukaupankuja",
+    "lat": 60.285469,
+    "lon": 25.061272,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 2811,
+    "name": "Neste Express, Laajalahti Turveradantie 13",
+    "lat": 60.202885,
+    "lon": 24.786089,
+    "latest": {
+      "95": {
+        "date": "2026-07-06",
+        "price": 2.169
+      },
+      "98": {
+        "date": "2026-07-06",
+        "price": 2.279
+      },
+      "dsl": {
+        "date": "2026-07-06",
+        "price": 2.189
+      }
+    }
+  },
+  {
+    "station_id": 2849,
+    "name": "ABC, Porttipuisto Tatti 19 (E85 1.616)",
+    "lat": 60.27438,
+    "lon": 25.079062,
+    "latest": {
+      "95": {
+        "date": "2026-07-08",
+        "price": 1.879
+      },
+      "98": {
+        "date": "2026-07-08",
+        "price": 1.969
+      },
+      "dsl": {
+        "date": "2026-07-08",
+        "price": 1.884
+      }
+    }
+  }
+]
