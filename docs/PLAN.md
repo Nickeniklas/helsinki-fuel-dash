@@ -83,7 +83,8 @@ GH Pages ── serves site/ ── index.html + Chart.js
 5. JSON export (done, 2026-07-10: `export.py`, 14 unit tests)
 6. GH Actions workflow: cron, run poller, commit (done, 2026-07-10:
    `.github/workflows/poll.yml`, not yet committed or run live)
-7. Dashboard v1 views (next)
+7. Dashboard v1 views (done, 2026-07-11: `site/index.html`, `style.css`,
+   `app.js`)
 8. Let data accumulate; revisit v2
 
 ## Open items
@@ -107,3 +108,19 @@ GH Pages ── serves site/ ── index.html + Chart.js
   trigger, so `poll.yml` needs its own deploy job). Neither file is committed
   yet — awaiting manual commit and one `workflow_dispatch` run to verify live
   before trusting the cron. Build order is at step 6 of 8; dashboard v1 is next.
+- Dashboard v1 built 2026-07-11: vanilla HTML/CSS/JS in `site/` (no build
+  step), Chart.js + Leaflet from CDN, dark theme, CartoDB dark tiles for the
+  map. Sticky fuel/radius controls drive a cheapest-first price table
+  (colored vs each station's own 7-day average), a Leaflet map (marker color
+  = spatial cheapness vs the displayed set's median), a per-station Chart.js
+  trend line, and an area median chart. All tunables (`HELSINKI_CENTER`,
+  `RADIUS_KM`, `AVG_WINDOW_DAYS`, `STALE_DAYS`, `COLOR_EPSILON`) live as
+  constants at the top of `app.js`. Logic verified in Node against live
+  `site/data/*.json` (no crashes, sane output) and then confirmed working in
+  a real browser by the user. Not yet committed or pushed.
+- Manual poll+export refresh 2026-07-11 08:xx UTC (~19.3 h after the
+  2026-07-10 12:57 UTC poll, comfortably past the 12 h cadence floor):
+  `fuel.db` now has 76 stations and 233 price rows (up from 224), dates
+  2026-07-05..2026-07-10 — the source still hasn't produced a 2026-07-11
+  report for any station yet, expected given date-only crowdsourced
+  resolution. `site/data/*.json` regenerated to match. Still uncommitted.

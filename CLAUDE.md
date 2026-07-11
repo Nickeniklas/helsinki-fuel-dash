@@ -36,8 +36,11 @@ stations, 224 prices) → JSON export (done, 2026-07-10: `export.py`, 14 unit
 tests) → Actions workflow (done, 2026-07-10: `.github/workflows/poll.yml`,
 not yet committed or run live — next step is committing, then a
 `workflow_dispatch` verification run before trusting the cron) →
-**dashboard v1** (next). v2 (heatmap, fill-now-or-wait signal) waits until
-weeks of data exist.
+**dashboard v1** (done, 2026-07-11: `site/index.html`, `site/style.css`,
+`site/app.js`, confirmed working in a real browser, not yet committed) →
+let data accumulate (manual poll+export refresh 2026-07-11: 76 stations,
+233 prices). v2 (heatmap, fill-now-or-wait signal) waits until weeks of
+data exist.
 
 ## Gotchas
 

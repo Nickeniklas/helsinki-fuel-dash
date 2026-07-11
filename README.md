@@ -2,9 +2,9 @@
 
 Personal fuel price tracker for the Helsinki area. Scrapes the crowdsourced site
 polttoaine.net on a 12 h GitHub Actions cron, accumulates price history in SQLite,
-and will publish a static Chart.js dashboard on GitHub Pages: current prices sorted
-cheapest-first, per-station price history, and area median trends for 95E10 / 98E /
-diesel.
+and publishes a static Chart.js + Leaflet dashboard: current prices sorted
+cheapest-first, a map, per-station price history, and area median trends for
+95E10 / 98E / diesel.
 
 No auth, no API key, no credentials needed anywhere in this project.
 
@@ -12,16 +12,25 @@ Full design: [docs/PLAN.md](docs/PLAN.md) · Scraper contract: [docs/SCRAPER.md]
 
 ## Status
 
-Build order (see `docs/PLAN.md`) is at step 6 of 8. The first live poll
-(2026-07-09) succeeded: `fuel.db` holds 76 stations (all with coords) and 224
-price rows across the full 5-day visibility window. `ajax.php?act=map` (the
-hoped-for bulk coordinate endpoint) doesn't work — confirmed dead 2026-07-09,
-see `docs/SCRAPER.md` — so coords come from one request per new station's map
+Build order (see `docs/PLAN.md`) is at step 7 of 8. `fuel.db` holds 76
+stations (all with coords) and 233 price rows as of the latest manual
+poll+export refresh (2026-07-11 08:xx UTC, dates 2026-07-05..2026-07-10 —
+the source hasn't produced a 2026-07-11 report yet, expected with its
+date-only crowdsourced resolution). `ajax.php?act=map` (the hoped-for bulk
+coordinate endpoint) doesn't work — confirmed dead 2026-07-09, see
+`docs/SCRAPER.md` — so coords come from one request per new station's map
 page instead. JSON export (`export.py`) and the GH Actions poll+deploy
 workflow (`.github/workflows/poll.yml`) are built and unit-tested (52 tests
 passing) as of 2026-07-10, but not yet committed or run live — next step is
 committing, then a manual `workflow_dispatch` run to verify the workflow
-before trusting the cron. After that: dashboard v1.
+before trusting the cron.
+
+Dashboard v1 (2026-07-11) is built in `site/`: `index.html`, `style.css`,
+`app.js`, no framework or build step, Chart.js + Leaflet from CDN. Sticky
+fuel/radius controls drive a price table, a Leaflet map (dark CartoDB tiles),
+a per-station trend chart, and an area median chart. Confirmed working in a
+real browser. Not yet committed. Serve locally with `python -m http.server`
+from `site/` (fetch needs `http://`, not `file://`).
 
 ## Local setup
 

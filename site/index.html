@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helsinki Fuel Prices</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="controls">
+  <div class="control-group">
+    <span class="control-label">Fuel</span>
+    <div class="fuel-buttons" role="group" aria-label="Fuel type">
+      <button type="button" class="fuel-btn active" data-fuel="95">95</button>
+      <button type="button" class="fuel-btn" data-fuel="98">98</button>
+      <button type="button" class="fuel-btn" data-fuel="dsl">Diesel</button>
+    </div>
+  </div>
+  <div class="control-group">
+    <span class="control-label">Area</span>
+    <div class="radius-buttons" role="group" aria-label="Radius filter">
+      <button type="button" class="radius-btn active" data-radius="15km">15 km</button>
+      <button type="button" class="radius-btn" data-radius="all">All stations</button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+
+  <div id="error-banner" class="error-banner" hidden></div>
+
+  <section class="panel" aria-labelledby="table-heading">
+    <h2 id="table-heading">Prices</h2>
+    <div class="table-scroll">
+      <table id="price-table">
+        <thead>
+          <tr>
+            <th>Station</th>
+            <th>Price</th>
+            <th>Reported</th>
+            <th>vs 7d avg</th>
+          </tr>
+        </thead>
+        <tbody id="price-table-body"></tbody>
+      </table>
+    </div>
+    <p id="table-empty" class="empty-note" hidden>No stations with this fuel in the selected area.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="map-heading">
+    <h2 id="map-heading">Map</h2>
+    <div id="map"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="trend-heading">
+    <h2 id="trend-heading">Station trend</h2>
+    <div class="control-group">
+      <label for="station-select" class="control-label">Station</label>
+      <select id="station-select"></select>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="trend-chart"></canvas>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="median-heading">
+    <h2 id="median-heading">Area median trend</h2>
+    <div class="chart-wrap">
+      <canvas id="median-chart"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

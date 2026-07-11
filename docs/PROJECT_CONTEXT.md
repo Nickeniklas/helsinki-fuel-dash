@@ -2,15 +2,16 @@ PROJECT CONTEXT — helsinki-fuel-dash
 Paste-ready summary for the Claude project. Condensed from docs/PLAN.md (replanned
 2026-07-08); if the plan changes, update both.
 
-Status (2026-07-10): parser, coordinate resolution, SQLite schema/upsert, the
-poller (poll.py), JSON export (export.py), and the GH Actions poll+deploy
-workflow (.github/workflows/poll.yml) are all built and unit-tested (52 tests
-passing). The first live poll against the real site succeeded (2026-07-09) —
-fuel.db has 76 stations (all geocoded) and 224 price rows across the full
-5-day visibility window. Build order is at step 6 of 8: export.py and
-poll.yml exist but aren't committed or run live yet — next is a manual
-commit plus one workflow_dispatch run to verify the workflow before trusting
-the cron, then the dashboard.
+Status (2026-07-11): parser, coordinate resolution, SQLite schema/upsert, the
+poller (poll.py), JSON export (export.py), the GH Actions poll+deploy
+workflow (.github/workflows/poll.yml), and dashboard v1 (site/index.html,
+style.css, app.js) are all built. 52 unit tests pass, and the dashboard has
+been manually confirmed working in a real browser. Latest poll+export refresh
+(2026-07-11): fuel.db has 76 stations (all geocoded) and 233 price rows
+across dates 2026-07-05 to 2026-07-10. Build order is at step 7 of 8:
+export.py and poll.yml exist but aren't committed or run live yet. Next is a
+manual commit plus one workflow_dispatch run to verify the workflow before
+trusting the cron.
 The project
 Niklas (GitHub: Nickeniklas) is building a personal fuel price tracker for the
 Helsinki area. No service provides long-term price trends or a sorted area-wide
@@ -37,12 +38,16 @@ fuel.db + site/data/*.json back to main (skipped if nothing changed), then
 deploys site/ to GH Pages in the same run. It shares the "pages" concurrency
 group with pages.yml, because GITHUB_TOKEN-authored pushes don't trigger
 other workflows' push triggers — poll.yml has to do its own deploy.
-Dashboard: static HTML + Chart.js in site/, served by GH Pages, reading
-only site/data/*.json. v1 views: current prices sorted with color vs each
-station's 7-day average, per-station trend chart with picker, area median lines
-for 95/98/dsl. v2 (deferred until weeks of data exist): day-of-week heatmap,
-"fill now or wait" signal. Not yet built — next up after the workflow is
-verified live.
+Dashboard: static HTML + Chart.js + Leaflet in site/, served by GH Pages,
+reading only site/data/*.json. v1 is built and confirmed working in a
+browser: sticky fuel (95/98/dsl) and radius (15 km / all) controls; a
+cheapest-first price table colored vs each station's 7-day average; a dark
+Leaflet map (CartoDB dark tiles) with marker color showing spatial cheapness;
+a per-station trend chart with picker; area median lines for 95/98/dsl.
+Config constants (HELSINKI_CENTER, RADIUS_KM, AVG_WINDOW_DAYS, STALE_DAYS,
+COLOR_EPSILON) live at the top of app.js. v2 (deferred until weeks of data
+exist): day-of-week heatmap, "fill now or wait" signal. Dashboard files are
+not yet committed.
 
 Key decisions and rules
 
