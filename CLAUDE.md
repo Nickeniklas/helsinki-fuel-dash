@@ -1,8 +1,16 @@
-# CLAUDE.md — helsinki-fuel-dash
+# CLAUDE.md — fuel-dash
 
 Personal fuel price tracker for the Helsinki area. Poller scrapes polttoaine.net
 into SQLite on a GH Actions cron, exports JSON, static Chart.js dashboard on
 GH Pages reads it. Full plan: `docs/PLAN.md`. Scraper contract: `docs/SCRAPER.md`.
+
+Live at https://nickeniklas.github.io/fuel-dash/ · repo at
+https://github.com/Nickeniklas/fuel-dash. The repo went through two renames
+(`gas-price-dashboard` → `helsinki-fuel-dash` → `fuel-dash`, 2026-07-16) to
+land on a name that doesn't bake in a city, since the plan is to broaden past
+Helsinki eventually. GitHub Pages URLs follow the current repo name
+automatically; local clones need `git remote set-url origin` updated by hand
+if they predate a rename — it does not happen on its own.
 
 ## Decided stack (do not re-litigate without being asked)
 
@@ -31,16 +39,14 @@ suggest going back to it.
 
 robots.txt check (done) → parser with HTML fixtures (done) → coordinate
 resolution (done, per-station map page — `ajax.php?act=map` bulk endpoint is
-dead) → schema + upsert (done) → first live poll (done, 2026-07-09: 76
-stations, 224 prices) → JSON export (done, 2026-07-10: `export.py`, 14 unit
-tests) → Actions workflow (done, 2026-07-10: `.github/workflows/poll.yml`,
-not yet committed or run live — next step is committing, then a
-`workflow_dispatch` verification run before trusting the cron) →
-**dashboard v1** (done, 2026-07-11: `site/index.html`, `site/style.css`,
-`site/app.js`, confirmed working in a real browser, not yet committed) →
-let data accumulate (manual poll+export refresh 2026-07-11: 76 stations,
-233 prices). v2 (heatmap, fill-now-or-wait signal) waits until weeks of
-data exist.
+dead) → schema + upsert (done) → first live poll (done, 2026-07-09) → JSON
+export (done: `export.py`) → Actions workflow (done and running live:
+`.github/workflows/poll.yml` cron has fired every ~12 h without a miss since
+2026-07-12) → **dashboard v1** (done, committed, live at
+https://nickeniklas.github.io/fuel-dash/) → **currently: letting data
+accumulate.** As of 2026-07-16: 89 stations (all geocoded), 474 price rows,
+dates 2026-07-05 to 2026-07-16 (~11 days of history). v2 (heatmap,
+fill-now-or-wait signal) waits until weeks of data exist — not there yet.
 
 ## Gotchas
 

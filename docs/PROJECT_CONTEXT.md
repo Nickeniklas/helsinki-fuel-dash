@@ -1,17 +1,20 @@
-PROJECT CONTEXT — helsinki-fuel-dash
+PROJECT CONTEXT — fuel-dash
 Paste-ready summary for the Claude project. Condensed from docs/PLAN.md (replanned
 2026-07-08); if the plan changes, update both.
 
-Status (2026-07-11): parser, coordinate resolution, SQLite schema/upsert, the
+Status (2026-07-16): parser, coordinate resolution, SQLite schema/upsert, the
 poller (poll.py), JSON export (export.py), the GH Actions poll+deploy
 workflow (.github/workflows/poll.yml), and dashboard v1 (site/index.html,
-style.css, app.js) are all built. 52 unit tests pass, and the dashboard has
-been manually confirmed working in a real browser. Latest poll+export refresh
-(2026-07-11): fuel.db has 76 stations (all geocoded) and 233 price rows
-across dates 2026-07-05 to 2026-07-10. Build order is at step 7 of 8:
-export.py and poll.yml exist but aren't committed or run live yet. Next is a
-manual commit plus one workflow_dispatch run to verify the workflow before
-trusting the cron.
+style.css, app.js) are all built, committed, and live. 52 unit tests pass.
+The cron has fired every ~12 h without a miss since 2026-07-12 — production
+is stable. fuel.db has 89 stations (all geocoded) and 474 price rows across
+dates 2026-07-05 to 2026-07-16 (~11 days of accumulated history). Build
+order is done through step 7 of 8; currently in step 8, letting data
+accumulate toward the "weeks of data" bar for v2. Live at
+https://nickeniklas.github.io/fuel-dash/. Repo renamed 2026-07-16
+(gas-price-dashboard → helsinki-fuel-dash → fuel-dash) to drop the city
+name from the project's identity ahead of planned international expansion;
+the Helsinki-area scope itself hasn't changed, only the name.
 The project
 Niklas (GitHub: Nickeniklas) is building a personal fuel price tracker for the
 Helsinki area. No service provides long-term price trends or a sorted area-wide
@@ -46,8 +49,7 @@ Leaflet map (CartoDB dark tiles) with marker color showing spatial cheapness;
 a per-station trend chart with picker; area median lines for 95/98/dsl.
 Config constants (HELSINKI_CENTER, RADIUS_KM, AVG_WINDOW_DAYS, STALE_DAYS,
 COLOR_EPSILON) live at the top of app.js. v2 (deferred until weeks of data
-exist): day-of-week heatmap, "fill now or wait" signal. Dashboard files are
-not yet committed.
+exist): day-of-week heatmap, "fill now or wait" signal.
 
 Key decisions and rules
 

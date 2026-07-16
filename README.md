@@ -1,4 +1,4 @@
-# helsinki-fuel-dash
+# fuel-dash
 
 Personal fuel price tracker for the Helsinki area. Scrapes the crowdsourced site
 polttoaine.net on a 12 h GitHub Actions cron, accumulates price history in SQLite,
@@ -8,29 +8,27 @@ cheapest-first, a map, per-station price history, and area median trends for
 
 No auth, no API key, no credentials needed anywhere in this project.
 
+Live: https://nickeniklas.github.io/fuel-dash/
 Full design: [docs/PLAN.md](docs/PLAN.md) · Scraper contract: [docs/SCRAPER.md](docs/SCRAPER.md)
 
 ## Status
 
-Build order (see `docs/PLAN.md`) is at step 7 of 8. `fuel.db` holds 76
-stations (all with coords) and 233 price rows as of the latest manual
-poll+export refresh (2026-07-11 08:xx UTC, dates 2026-07-05..2026-07-10 —
-the source hasn't produced a 2026-07-11 report yet, expected with its
-date-only crowdsourced resolution). `ajax.php?act=map` (the hoped-for bulk
+Build order (see `docs/PLAN.md`) is done through dashboard v1 and running
+live: the poll+export+deploy workflow (`.github/workflows/poll.yml`) has
+fired every ~12 h without a miss since 2026-07-12. `fuel.db` holds 89
+stations (all geocoded) and 474 price rows as of 2026-07-16, dates
+2026-07-05 through 2026-07-16. `ajax.php?act=map` (the hoped-for bulk
 coordinate endpoint) doesn't work — confirmed dead 2026-07-09, see
 `docs/SCRAPER.md` — so coords come from one request per new station's map
-page instead. JSON export (`export.py`) and the GH Actions poll+deploy
-workflow (`.github/workflows/poll.yml`) are built and unit-tested (52 tests
-passing) as of 2026-07-10, but not yet committed or run live — next step is
-committing, then a manual `workflow_dispatch` run to verify the workflow
-before trusting the cron.
+page instead.
 
-Dashboard v1 (2026-07-11) is built in `site/`: `index.html`, `style.css`,
-`app.js`, no framework or build step, Chart.js + Leaflet from CDN. Sticky
-fuel/radius controls drive a price table, a Leaflet map (dark CartoDB tiles),
-a per-station trend chart, and an area median chart. Confirmed working in a
-real browser. Not yet committed. Serve locally with `python -m http.server`
-from `site/` (fetch needs `http://`, not `file://`).
+Dashboard v1 is live in `site/`: `index.html`, `style.css`, `app.js`, no
+framework or build step, Chart.js + Leaflet from CDN. Sticky fuel/radius
+controls drive a price table, a Leaflet map (dark CartoDB tiles), a
+per-station trend chart, and an area median chart. Currently just letting
+data accumulate — v2 (heatmap, fill-now-or-wait signal) waits until weeks
+of history exist. Serve locally with `python -m http.server` from `site/`
+(fetch needs `http://`, not `file://`).
 
 ## Local setup
 

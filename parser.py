@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-USER_AGENT = "helsinki-fuel-dash/0.1 (personal project; contact: savonheimoniklas@gmail.com)"
+USER_AGENT = "fuel-dash/0.1 (personal project; contact: savonheimoniklas@gmail.com)"
 
 DATE_RE = re.compile(r"^(\d{2})\.(\d{2})\.$")
 MAP_ID_RE = re.compile(r"id=(\d+)")

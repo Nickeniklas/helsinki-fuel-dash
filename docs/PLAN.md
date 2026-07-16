@@ -1,4 +1,4 @@
-# PLAN — helsinki-fuel-dash
+# PLAN — fuel-dash
 
 Replanned 2026-07-08. Original plan (same date) used the unofficial Tankille API;
 that source blocked us on day one and this plan replaces it entirely. No workarounds
@@ -81,11 +81,14 @@ GH Pages ── serves site/ ── index.html + Chart.js
 3. Coordinate resolution: test `ajax.php?act=map`, else map-page parse; `stations` table (done)
 4. SQLite schema + upsert + dedupe (done)
 5. JSON export (done, 2026-07-10: `export.py`, 14 unit tests)
-6. GH Actions workflow: cron, run poller, commit (done, 2026-07-10:
-   `.github/workflows/poll.yml`, not yet committed or run live)
-7. Dashboard v1 views (done, 2026-07-11: `site/index.html`, `style.css`,
-   `app.js`)
-8. Let data accumulate; revisit v2
+6. GH Actions workflow: cron, run poller, commit (done, committed and
+   running live: `.github/workflows/poll.yml` has fired every ~12 h without
+   a miss since 2026-07-12)
+7. Dashboard v1 views (done, committed, live at
+   https://nickeniklas.github.io/fuel-dash/: `site/index.html`,
+   `style.css`, `app.js`)
+8. Let data accumulate; revisit v2 (in progress — see Resolved below for
+   current data volume)
 
 ## Open items
 
@@ -124,3 +127,21 @@ GH Pages ── serves site/ ── index.html + Chart.js
   2026-07-05..2026-07-10 — the source still hasn't produced a 2026-07-11
   report for any station yet, expected given date-only crowdsourced
   resolution. `site/data/*.json` regenerated to match. Still uncommitted.
+- `poll.yml` and dashboard v1 committed and pushed; a `workflow_dispatch`
+  verification run succeeded, and the cron has since fired every ~12 h
+  without a miss from 2026-07-12 through 2026-07-16 — production is stable.
+  As of 2026-07-16: `fuel.db` has 89 stations (all geocoded) and 474 price
+  rows, dates 2026-07-05 through 2026-07-16 (~11 days of accumulated
+  history; the source itself only shows 5 days per poll, but the DB keeps
+  everything). Still short of the "weeks of data" bar for v2.
+- Repo renamed 2026-07-16: `gas-price-dashboard` → `helsinki-fuel-dash` →
+  `fuel-dash`, to drop the city name from the project's identity now that
+  international expansion is planned (the Helsinki-area scope itself is
+  unchanged — only the name). Live at
+  https://nickeniklas.github.io/fuel-dash/. All docs, the tab title, and
+  the scraper's `User-Agent` string updated to match; geographic mentions
+  ("Helsinki area", `HELSINKI_CENTER`, fixture/test names) were left alone
+  since they describe real current scope, not branding. Local git remote
+  had drifted through both renames (still pointed at
+  `gas-price-dashboard.git`) and was updated by hand — GitHub does not
+  update a local clone's remote URL automatically when a repo is renamed.
