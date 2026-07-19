@@ -33,10 +33,18 @@
 
   <section class="panel" aria-labelledby="table-heading">
     <h2 id="table-heading">Prices</h2>
+    <div class="control-group table-search">
+      <label for="station-search" class="control-label">Search</label>
+      <div class="search-wrap">
+        <input type="search" id="station-search" placeholder="Filter by name…" autocomplete="off">
+        <button type="button" id="station-search-clear" class="search-clear" aria-label="Clear search" hidden>&times;</button>
+      </div>
+    </div>
     <div class="table-scroll">
       <table id="price-table">
         <thead>
           <tr>
+            <th class="star-col" aria-label="Favorite"></th>
             <th>Station</th>
             <th>Price</th>
             <th>Reported</th>
@@ -56,6 +64,7 @@
 
   <section class="panel" aria-labelledby="trend-heading">
     <h2 id="trend-heading">Station trend</h2>
+    <div id="favorite-chips" class="favorite-chips" hidden></div>
     <div class="control-group">
       <label for="station-select" class="control-label">Station</label>
       <select id="station-select"></select>

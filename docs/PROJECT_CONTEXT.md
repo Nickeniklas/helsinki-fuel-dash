@@ -15,6 +15,15 @@ https://nickeniklas.github.io/fuel-dash/. Repo renamed 2026-07-16
 (gas-price-dashboard → helsinki-fuel-dash → fuel-dash) to drop the city
 name from the project's identity ahead of planned international expansion;
 the Helsinki-area scope itself hasn't changed, only the name.
+Dashboard UX pass 2026-07-19 (browser-verified locally, not yet committed):
+clicking a price-table row or a map popup's "View trend" button loads that
+station into the trend chart and scrolls to it, kept in sync with the
+station picker; starred favorites persist in the browser's `localStorage`
+and pin to the top of the price table (with an "outside area" hint if a
+favorite falls outside the 15 km filter) plus quick-switch chips above the
+trend chart; and a live name search filters the price table, with pinned
+favorites always visible. All in `site/app.js` / `index.html` / `style.css`,
+no new dependencies.
 The project
 Niklas (GitHub: Nickeniklas) is building a personal fuel price tracker for the
 Helsinki area. No service provides long-term price trends or a sorted area-wide

@@ -25,10 +25,16 @@ page instead.
 Dashboard v1 is live in `site/`: `index.html`, `style.css`, `app.js`, no
 framework or build step, Chart.js + Leaflet from CDN. Sticky fuel/radius
 controls drive a price table, a Leaflet map (dark CartoDB tiles), a
-per-station trend chart, and an area median chart. Currently just letting
-data accumulate — v2 (heatmap, fill-now-or-wait signal) waits until weeks
-of history exist. Serve locally with `python -m http.server` from `site/`
-(fetch needs `http://`, not `file://`).
+per-station trend chart, and an area median chart. A 2026-07-19 UX pass
+(browser-verified locally, not yet committed) added: clicking a table row or
+a map popup's "View trend" button loads that station into the trend chart
+and scrolls to it; stations can be starred as favorites, persisted in the
+browser's `localStorage`, which pins them to the top of the price table and
+adds quick-switch chips above the trend chart; and a live name search filters
+the price table. Currently just letting data accumulate — v2 (heatmap,
+fill-now-or-wait signal) waits until weeks of history exist. Serve locally
+with `python -m http.server` from `site/` (fetch needs `http://`, not
+`file://`).
 
 ## Local setup
 

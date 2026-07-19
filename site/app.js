@@ -22,6 +22,8 @@ const COLORS = {
 
 const FUEL_LINE_COLORS = { '95': '#4a9eff', '98': '#f6ad55', dsl: '#b794f4' };
 
+const FAVORITES_STORAGE_KEY = 'fuel-dash:favorites';
+
 // ---- State ----
 const state = {
   fuel: '95',
@@ -36,6 +38,9 @@ const state = {
   radiusCircle: null,
   trendChart: null,
   medianChart: null,
+  favorites: new Set(),
+  searchQuery: '',
+  selectedStationId: null,
 };
 
 // ---- Utilities ----
@@ -91,6 +96,42 @@ function computeStationAvg(stationId, fuel) {
   return sum / pts.length;
 }
 
+// ---- Favorites ----
+function loadFavorites() {
+  try {
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+    if (!raw) return new Set();
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return new Set();
+    return new Set(arr.filter((id) => Number.isFinite(id)).map(Number));
+  } catch {
+    return new Set();
+  }
+}
+
+function saveFavorites() {
+  localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(Array.from(state.favorites)));
+}
+
+function pruneFavorites() {
+  let changed = false;
+  for (const id of Array.from(state.favorites)) {
+    if (!state.stationsById.has(id)) {
+      state.favorites.delete(id);
+      changed = true;
+    }
+  }
+  if (changed) saveFavorites();
+}
+
+function toggleFavorite(stationId) {
+  if (state.favorites.has(stationId)) state.favorites.delete(stationId);
+  else state.favorites.add(stationId);
+  saveFavorites();
+  renderTable();
+  renderFavoriteChips();
+}
+
 // ---- Filtering ----
 function stationHasFuel(station, fuel) {
   return station.latest && station.latest[fuel] != null;
@@ -103,7 +144,7 @@ function inRadius(station) {
   );
 }
 
-function getTableStations() {
+function baseFilteredStations() {
   return state.stations.filter((s) => {
     if (!stationHasFuel(s, state.fuel)) return false;
     if (state.radiusMode === '15km') return inRadius(s);
@@ -112,58 +153,118 @@ function getTableStations() {
 }
 
 function getMapStations() {
-  return getTableStations().filter((s) => s.lat != null && s.lon != null);
+  return baseFilteredStations().filter((s) => s.lat != null && s.lon != null);
+}
+
+function matchesSearch(station) {
+  if (!state.searchQuery) return true;
+  return station.name.toLowerCase().includes(state.searchQuery);
+}
+
+function getPinnedStations() {
+  return state.stations
+    .filter((s) => state.favorites.has(s.station_id) && stationHasFuel(s, state.fuel))
+    .sort((a, b) => a.latest[state.fuel].price - b.latest[state.fuel].price);
+}
+
+function getMainTableStations() {
+  return baseFilteredStations()
+    .filter((s) => !state.favorites.has(s.station_id) && matchesSearch(s))
+    .sort((a, b) => a.latest[state.fuel].price - b.latest[state.fuel].price);
 }
 
 // ---- Table ----
+function createStationRow(station, { outsideArea }) {
+  const latest = station.latest[state.fuel];
+  const avg = computeStationAvg(station.station_id, state.fuel);
+  const stale = daysBefore(state.referenceDate, latest.date) > STALE_DAYS;
+  const isFavorite = state.favorites.has(station.station_id);
+
+  const tr = document.createElement('tr');
+  tr.className = 'station-row';
+  if (stale) tr.classList.add('stale');
+
+  const tdStar = document.createElement('td');
+  tdStar.className = 'star-cell';
+  const starBtn = document.createElement('button');
+  starBtn.type = 'button';
+  starBtn.className = 'star-btn' + (isFavorite ? ' active' : '');
+  starBtn.setAttribute('aria-pressed', String(isFavorite));
+  starBtn.setAttribute(
+    'aria-label',
+    (isFavorite ? 'Remove ' : 'Add ') + station.name + (isFavorite ? ' from favorites' : ' to favorites')
+  );
+  starBtn.textContent = isFavorite ? '★' : '☆';
+  starBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleFavorite(station.station_id);
+  });
+  tdStar.appendChild(starBtn);
+
+  const tdName = document.createElement('td');
+  tdName.className = 'station-name';
+  tdName.textContent = station.name;
+  if (outsideArea) {
+    const hint = document.createElement('span');
+    hint.className = 'outside-hint';
+    hint.textContent = ' (outside area)';
+    tdName.appendChild(hint);
+  }
+
+  const tdPrice = document.createElement('td');
+  tdPrice.textContent = latest.price.toFixed(3) + ' €';
+
+  const tdDate = document.createElement('td');
+  tdDate.textContent = latest.date;
+
+  const tdDelta = document.createElement('td');
+  if (avg == null) {
+    tdDelta.textContent = '—';
+    tdDelta.className = 'delta-neutral';
+  } else {
+    const cents = (latest.price - avg) * 100;
+    const sign = cents > 0 ? '+' : '';
+    tdDelta.textContent = `${sign}${cents.toFixed(1)} c`;
+    if (latest.price <= avg - COLOR_EPSILON) tdDelta.className = 'delta-green';
+    else if (latest.price >= avg + COLOR_EPSILON) tdDelta.className = 'delta-red';
+    else tdDelta.className = 'delta-neutral';
+  }
+
+  tr.append(tdStar, tdName, tdPrice, tdDate, tdDelta);
+  tr.addEventListener('click', () => selectStation(station.station_id, { scroll: true }));
+  return tr;
+}
+
 function renderTable() {
-  const stations = getTableStations()
-    .slice()
-    .sort((a, b) => a.latest[state.fuel].price - b.latest[state.fuel].price);
+  const pinned = getPinnedStations();
+  const main = getMainTableStations();
 
   const tbody = document.getElementById('price-table-body');
   const emptyNote = document.getElementById('table-empty');
   tbody.innerHTML = '';
 
-  if (!stations.length) {
+  if (!pinned.length && !main.length) {
     emptyNote.hidden = false;
     return;
   }
   emptyNote.hidden = true;
 
-  for (const s of stations) {
-    const latest = s.latest[state.fuel];
-    const avg = computeStationAvg(s.station_id, state.fuel);
-    const stale = daysBefore(state.referenceDate, latest.date) > STALE_DAYS;
+  for (const s of pinned) {
+    const outsideArea = state.radiusMode === '15km' && !inRadius(s);
+    tbody.appendChild(createStationRow(s, { outsideArea }));
+  }
 
-    const tr = document.createElement('tr');
-    if (stale) tr.classList.add('stale');
+  if (pinned.length && main.length) {
+    const divider = document.createElement('tr');
+    divider.className = 'pinned-divider';
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    divider.appendChild(td);
+    tbody.appendChild(divider);
+  }
 
-    const tdName = document.createElement('td');
-    tdName.className = 'station-name';
-    tdName.textContent = s.name;
-
-    const tdPrice = document.createElement('td');
-    tdPrice.textContent = latest.price.toFixed(3) + ' €';
-
-    const tdDate = document.createElement('td');
-    tdDate.textContent = latest.date;
-
-    const tdDelta = document.createElement('td');
-    if (avg == null) {
-      tdDelta.textContent = '—';
-      tdDelta.className = 'delta-neutral';
-    } else {
-      const cents = (latest.price - avg) * 100;
-      const sign = cents > 0 ? '+' : '';
-      tdDelta.textContent = `${sign}${cents.toFixed(1)} c`;
-      if (latest.price <= avg - COLOR_EPSILON) tdDelta.className = 'delta-green';
-      else if (latest.price >= avg + COLOR_EPSILON) tdDelta.className = 'delta-red';
-      else tdDelta.className = 'delta-neutral';
-    }
-
-    tr.append(tdName, tdPrice, tdDate, tdDelta);
-    tbody.appendChild(tr);
+  for (const s of main) {
+    tbody.appendChild(createStationRow(s, { outsideArea: false }));
   }
 }
 
@@ -175,6 +276,13 @@ function initMap() {
     maxZoom: 19,
   }).addTo(state.map);
   state.markersLayer = L.layerGroup().addTo(state.map);
+
+  state.map.getContainer().addEventListener('click', (e) => {
+    const btn = e.target.closest('.popup-trend-btn');
+    if (!btn) return;
+    const id = Number(btn.dataset.stationId);
+    if (Number.isFinite(id)) selectStation(id, { scroll: true });
+  });
 }
 
 function buildPopupHtml(station) {
@@ -194,7 +302,9 @@ function buildPopupHtml(station) {
     deltaHtml = `<div>vs 7d avg (${FUEL_LABELS[state.fuel]}): ${sign}${cents.toFixed(1)} c</div>`;
   }
 
-  return `<b>${escapeHtml(station.name)}</b>${rows}${deltaHtml}`;
+  const trendBtn = `<button type="button" class="popup-trend-btn" data-station-id="${station.station_id}">View trend &rarr;</button>`;
+
+  return `<b>${escapeHtml(station.name)}</b>${rows}${deltaHtml}${trendBtn}`;
 }
 
 function renderMap() {
@@ -254,6 +364,44 @@ function populateStationSelect() {
     select.appendChild(el);
   }
   if (options.length) select.value = options[0].id;
+}
+
+function renderFavoriteChips() {
+  const container = document.getElementById('favorite-chips');
+  const stations = Array.from(state.favorites)
+    .map((id) => state.stationsById.get(id))
+    .filter(Boolean)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  container.innerHTML = '';
+  container.hidden = !stations.length;
+
+  for (const station of stations) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'favorite-chip';
+    if (String(station.station_id) === state.selectedStationId) chip.classList.add('active');
+    chip.textContent = station.name;
+    chip.addEventListener('click', () => selectStation(station.station_id));
+    container.appendChild(chip);
+  }
+}
+
+function selectStation(stationId, { scroll = false } = {}) {
+  const id = String(stationId);
+  if (!state.history[id]) return;
+
+  state.selectedStationId = id;
+  renderTrendChart(id);
+
+  const select = document.getElementById('station-select');
+  if (select.value !== id) select.value = id;
+
+  renderFavoriteChips();
+
+  if (scroll) {
+    document.getElementById('trend-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function fuelDatasets(entries) {
@@ -331,7 +479,22 @@ function setupControls() {
   });
 
   document.getElementById('station-select').addEventListener('change', (e) => {
-    renderTrendChart(e.target.value);
+    selectStation(e.target.value);
+  });
+
+  const searchInput = document.getElementById('station-search');
+  const searchClear = document.getElementById('station-search-clear');
+  searchInput.addEventListener('input', (e) => {
+    state.searchQuery = e.target.value.trim().toLowerCase();
+    searchClear.hidden = !state.searchQuery;
+    renderTable();
+  });
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    state.searchQuery = '';
+    searchClear.hidden = true;
+    renderTable();
+    searchInput.focus();
   });
 }
 
@@ -375,15 +538,19 @@ async function main() {
     return;
   }
 
+  state.favorites = loadFavorites();
+  pruneFavorites();
+
   initMap();
   renderTable();
   renderMap();
   populateStationSelect();
 
   const select = document.getElementById('station-select');
-  if (select.value) renderTrendChart(select.value);
+  if (select.value) selectStation(select.value);
 
   renderMedianChart();
+  renderFavoriteChips();
   setupControls();
 }
 

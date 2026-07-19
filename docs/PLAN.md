@@ -145,3 +145,20 @@ GH Pages ── serves site/ ── index.html + Chart.js
   had drifted through both renames (still pointed at
   `gas-price-dashboard.git`) and was updated by hand — GitHub does not
   update a local clone's remote URL automatically when a repo is renamed.
+- Dashboard UX pass 2026-07-19: three additions to dashboard v1, all in
+  `site/` (`app.js`, `index.html`, `style.css`), no new dependencies. (1)
+  Clicking a price-table row or a "View trend" button added to each Leaflet
+  map popup loads that station into the trend chart and smooth-scrolls to
+  it, keeping the station `<select>` in sync either direction. (2) Stations
+  can be starred as favorites, persisted in the browser's `localStorage`
+  (`fuel-dash:favorites`); favorited stations pin to the top of the price
+  table under a thin divider (still cheapest-first within the pinned group,
+  still colored vs their 7-day average), show an "outside area" hint instead
+  of being hidden when the 15 km filter would otherwise exclude them, and
+  get one quick-switch chip each above the trend chart. Stale ids (a
+  favorited station no longer in `stations.json`) are pruned automatically.
+  (3) A live, case-insensitive name search filters the price table; pinned
+  favorites always stay visible regardless of the search text. `renderTable`
+  / `renderMap` / `renderTrendChart` remain the single render paths.
+  Browser-verified locally against live `site/data/*.json`; not yet
+  committed.
